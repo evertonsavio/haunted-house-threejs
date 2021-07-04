@@ -51,7 +51,7 @@ house.add(roof)
 
 // Floor
 const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(20, 20),
+    new THREE.PlaneGeometry(100, 100),
     new THREE.MeshStandardMaterial({ color: '#a9c388' })
 )
 floor.rotation.x = - Math.PI * 0.5
@@ -62,7 +62,7 @@ scene.add(floor)
 
 const door = new THREE.Mesh(
     new THREE.PlaneBufferGeometry(1.2, 2),
-    new THREE.MeshStandardMaterial({ color: 'aa7b7b' })
+    new THREE.MeshStandardMaterial({ color: '#aa7b7b' })
 )
 door.position.set(0, 2 * 0.5, 2 + 0.01)
 
@@ -93,17 +93,37 @@ bush5.position.set(-2, 0.05, 2.2)
 
 house.add(bush1, bush2, bush3, bush4, bush5)
 
+//Graves
+const graves = new THREE.Group()
+scene.add(graves)
+
+const graveGeometry = new THREE.BoxBufferGeometry(0.6, 0.8, 0.2)
+const graveMaterial = new THREE.MeshStandardMaterial({ color: '#b2b6b1' })
+
+for (let i = 0; i < 250; i++) {
+    const angle = Math.random() * Math.PI * 2
+    const radius = 6 + Math.random() * 48
+    const x = Math.sin(angle) * radius
+    const z = Math.cos(angle) * radius
+
+    const grave = new THREE.Mesh(graveGeometry, graveMaterial)
+    grave.position.set(x, 0.8 * 0.3, z)
+    grave.rotation.y = (Math.random() - 0.5) * 0.4
+    grave.rotation.z = (Math.random() - 0.5) * 0.4
+    graves.add(grave)
+
+}
 
 /**
  * Lights
  */
 // Ambient light
-const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
+const ambientLight = new THREE.AmbientLight('#b9d5ff', 0.1)
 gui.add(ambientLight, 'intensity').min(0).max(1).step(0.001)
 scene.add(ambientLight)
 
 // Directional light
-const moonLight = new THREE.DirectionalLight('#ffffff', 0.5)
+const moonLight = new THREE.DirectionalLight('#b9d5ff', 0.1)
 moonLight.position.set(4, 5, - 2)
 gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
