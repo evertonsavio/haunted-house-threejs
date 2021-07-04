@@ -23,13 +23,27 @@ const textureLoader = new THREE.TextureLoader()
 /**
  * House
  */
-// Temporary sphere
-const sphere = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 32, 32),
-    new THREE.MeshStandardMaterial({ roughness: 0.7 })
+const house = new THREE.Group()
+scene.add(house)
+
+//Walls
+const walls = new THREE.Mesh(
+    new THREE.BoxGeometry(4, 3, 4),
+    new THREE.MeshStandardMaterial({ color: '#ac8e82' })
 )
-sphere.position.y = 1
-scene.add(sphere)
+walls.position.y = 3 * 0.5
+
+house.add(walls)
+
+//Roof
+const roof = new THREE.Mesh(
+    new THREE.ConeBufferGeometry(4, 1.6, 4),
+    new THREE.MeshStandardMaterial({ color: '#b35f45' })
+)
+roof.position.y = 3 + (1.6 * 0.5)
+roof.rotation.y = Math.PI * 0.25
+house.add(roof)
+
 
 // Floor
 const floor = new THREE.Mesh(
@@ -65,8 +79,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -108,8 +121,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+const tick = () => {
     const elapsedTime = clock.getElapsedTime()
 
     // Update controls
