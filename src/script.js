@@ -12,8 +12,12 @@ const gui = new dat.GUI()
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
+
+
 // Scene
 const scene = new THREE.Scene()
+const fog = new THREE.Fog('#262837', 1, 15)
+scene.fog = fog
 
 //Axes Helper
 const axesHelper = new THREE.AxesHelper(10)
@@ -131,6 +135,11 @@ gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
 gui.add(moonLight.position, 'z').min(- 5).max(5).step(0.001)
 scene.add(moonLight)
 
+//Door light
+const doorLight = new THREE.PointLight('#ff7d46', 1, 5)
+doorLight.position.set(0, 2.2, 2.7)
+house.add(doorLight)
+
 /**
  * Sizes
  */
@@ -175,6 +184,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setClearColor('#262837')
 
 /**
  * Animate
