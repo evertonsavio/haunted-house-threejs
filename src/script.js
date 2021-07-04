@@ -15,6 +15,10 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+//Axes Helper
+const axesHelper = new THREE.AxesHelper(10)
+scene.add(axesHelper)
+
 /**
  * Textures
  */
@@ -53,6 +57,42 @@ const floor = new THREE.Mesh(
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
+
+//Door
+
+const door = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(1.2, 2),
+    new THREE.MeshStandardMaterial({ color: 'aa7b7b' })
+)
+door.position.set(0, 2 * 0.5, 2 + 0.01)
+
+house.add(door)
+
+const bushGeometry = new THREE.SphereBufferGeometry(1, 16, 16)
+const bushMaterial = new THREE.MeshStandardMaterial({ color: '#89c854' })
+
+const bush1 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush1.scale.set(0.5, 0.5, 0.5)
+bush1.position.set(1.2, 0.2, 2.2)
+
+const bush2 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush2.scale.set(0.25, 0.25, 0.25)
+bush2.position.set(1.8, 0.2, 2.2)
+
+const bush3 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush3.scale.set(0.15, 0.15, 0.15)
+bush3.position.set(- 1.4, 0.05, 2.6)
+
+const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush4.scale.set(0.4, 0.4, 0.4)
+bush4.position.set(-1.2, 0.05, 2.2)
+
+const bush5 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush5.scale.set(0.6, 0.6, 0.6)
+bush5.position.set(-2, 0.05, 2.2)
+
+house.add(bush1, bush2, bush3, bush4, bush5)
+
 
 /**
  * Lights
@@ -98,9 +138,9 @@ window.addEventListener('resize', () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 4
-camera.position.y = 2
-camera.position.z = 5
+camera.position.x = 7
+camera.position.y = 5
+camera.position.z = 7
 scene.add(camera)
 
 // Controls
