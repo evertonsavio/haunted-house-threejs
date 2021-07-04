@@ -28,6 +28,39 @@ scene.add(axesHelper)
  */
 const textureLoader = new THREE.TextureLoader()
 
+const doorColorTexture = textureLoader.load('/textures/door/color.jpg')
+const doorAlphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+const doorAmbientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
+const doorHeightTexture = textureLoader.load('/textures/door/height.jpg')
+const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
+const doorMetalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
+const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
+
+const bricksColorTexture = textureLoader.load('/textures/bricks/color.jpg')
+const bricksAmbientOcclusionTexture = textureLoader.load('/textures/bricks/ambientOcclusion.jpg')
+const bricksNormalTexture = textureLoader.load('/textures/bricks/normal.jpg')
+const bricksRoughnessTexture = textureLoader.load('/textures/bricks/roughness.jpg')
+
+const grassColorTexture = textureLoader.load('/textures/grass/color.jpg')
+const grassAmbientOcclusionTexture = textureLoader.load('/textures/grass/ambientOcclusion.jpg')
+const grassNormalTexture = textureLoader.load('/textures/grass/normal.jpg')
+const grassRoughnessTexture = textureLoader.load('/textures/grass/roughness.jpg')
+
+grassColorTexture.repeat.set(32, 32)
+grassAmbientOcclusionTexture.repeat.set(32, 32)
+grassNormalTexture.repeat.set(32, 32)
+grassRoughnessTexture.repeat.set(32, 32)
+
+grassColorTexture.wrapS = THREE.RepeatWrapping
+grassAmbientOcclusionTexture.wrapS = THREE.RepeatWrapping
+grassNormalTexture.wrapS = THREE.RepeatWrapping
+grassRoughnessTexture.wrapS = THREE.RepeatWrapping
+
+grassColorTexture.wrapT = THREE.RepeatWrapping
+grassAmbientOcclusionTexture.wrapT = THREE.RepeatWrapping
+grassNormalTexture.wrapT = THREE.RepeatWrapping
+grassRoughnessTexture.wrapT = THREE.RepeatWrapping
+
 /**
  * House
  */
@@ -36,10 +69,19 @@ scene.add(house)
 
 //Walls
 const walls = new THREE.Mesh(
-    new THREE.BoxGeometry(4, 3, 4),
-    new THREE.MeshStandardMaterial({ color: '#ac8e82' })
+    new THREE.BoxGeometry(4, 2.6, 4),
+    new THREE.MeshStandardMaterial({
+        map: bricksColorTexture,
+        aoMap: bricksAmbientOcclusionTexture,
+        normalMap: bricksNormalTexture,
+        roughnessMap: bricksRoughnessTexture
+    })
 )
-walls.position.y = 3 * 0.5
+walls.geometry.setAttribute(
+    'uv2',
+    new THREE.Float32BufferAttribute(walls.geometry.attributes.uv.array, 2)
+)
+walls.position.y = 2.6 * 0.5
 
 house.add(walls)
 
@@ -48,7 +90,7 @@ const roof = new THREE.Mesh(
     new THREE.ConeBufferGeometry(4, 1.6, 4),
     new THREE.MeshStandardMaterial({ color: '#b35f45' })
 )
-roof.position.y = 3 + (1.6 * 0.5)
+roof.position.y = 2.6 + (1.6 * 0.5)
 roof.rotation.y = Math.PI * 0.25
 house.add(roof)
 
@@ -56,8 +98,19 @@ house.add(roof)
 // Floor
 const floor = new THREE.Mesh(
     new THREE.PlaneGeometry(100, 100),
-    new THREE.MeshStandardMaterial({ color: '#a9c388' })
+    new THREE.MeshStandardMaterial({
+        map: grassColorTexture,
+        aoMap: grassAmbientOcclusionTexture,
+        normalMap: grassNormalTexture,
+        roughnessMap: grassRoughnessTexture
+    })
 )
+
+floor.geometry.setAttribute(
+    'uv2',
+    new THREE.Float32BufferAttribute(floor.geometry.attributes.uv.array, 2)
+)
+
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
 scene.add(floor)
@@ -65,8 +118,23 @@ scene.add(floor)
 //Door
 
 const door = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(1.2, 2),
-    new THREE.MeshStandardMaterial({ color: '#aa7b7b' })
+    new THREE.PlaneBufferGeometry(2.2, 2.2, 100, 100),
+    new THREE.MeshStandardMaterial({
+        map: doorColorTexture,
+        transparent: true,
+        alphaMap: doorAlphaTexture,
+        aoMap: doorAmbientOcclusionTexture,
+        displacementMap: doorHeightTexture,
+        displacementScale: 0.1,
+        wireframe: false,
+        normalMap: doorNormalTexture,
+        metalnessMap: doorMetalnessTexture,
+        roughnessMap: doorRoughnessTexture
+    })
+)
+door.geometry.setAttribute(
+    'uv2',
+    new THREE.Float32BufferAttribute(door.geometry.attributes.uv.array, 2)
 )
 door.position.set(0, 2 * 0.5, 2 + 0.01)
 
